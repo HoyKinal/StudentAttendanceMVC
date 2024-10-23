@@ -1,0 +1,78 @@
+﻿@model IEnumerable<StudentAttendance.Models.Student>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h1>Students</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Enrollment Number</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.StudentName</td>
+                <td>@student.EnrollmentNumber</td>
+                <td>
+                    <!-- Edit Button -->
+                    <a href="@Url.Action("Edit", "Student", new { id = student.StudentId })" class="btn btn-sm btn-primary">Edit</a>
+
+                    <!-- Delete Button to trigger modal -->
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-studentid="@student.StudentId" data-studentname="@student.StudentName">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <strong id="studentName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget;
+
+            // Extract info from data-* attributes
+            var studentId = button.getAttribute('data-studentid');
+            var studentName = button.getAttribute('data-studentname');
+
+            // Update the modal's content
+            var studentNameElem = deleteModal.querySelector('#studentName');
+            studentNameElem.textContent = studentName;
+
+            // Update the form action to call the Delete action on the controller
+            var form = deleteModal.querySelector('#deleteForm');
+            form.action = '/Student/Delete/' + studentId;
+        });
+    </script>
+}

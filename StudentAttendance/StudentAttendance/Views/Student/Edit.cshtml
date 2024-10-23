@@ -1,0 +1,37 @@
+﻿@model StudentAttendance.Models.Student
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Student</h1>
+
+<h4>Student</h4>
+<hr />
+<div>
+    <form asp-action="Edit" method="post">
+        <div class="form-group">
+            <label asp-for="StudentId" class="control-label"></label>
+            <input asp-for="StudentId" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label asp-for="StudentName" class="control-label"></label>
+            <input asp-for="StudentName" class="form-control" />
+            <span asp-validation-for="StudentName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnrollmentNumber" class="control-label"></label>
+            <input asp-for="EnrollmentNumber" class="form-control" />
+            <span asp-validation-for="EnrollmentNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
